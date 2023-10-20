@@ -37,9 +37,22 @@ namespace Data
             return new(catcher.Id, catcher.Name);
         }
 
-        public Task<DogContext> CreateDogAsync(string name)
+        public async Task<DogContext> CreateDogAsync(string name)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            Dog doggo = new()
+            {
+                Name = name,
+                Status = SystemState.Unknown
+            };
+
+            this.context.Dogs.Add(doggo);
+
+            await this.context.SaveChangesAsync();
+
+            return new(doggo.Id, doggo.Name, null, doggo.Status, false);
         }
 
         public async Task<PoundContext> CreatePoundAsync(string name)
