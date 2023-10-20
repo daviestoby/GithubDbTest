@@ -3,14 +3,12 @@ on: [push]
 
 jobs:
   test:
-    environment: testenv
+    container: mcr.microsoft.com/dotnet/sdk:7.0
     name: build and test
     runs-on: ubuntu-latest
     services:
       sql:
         image: mcr.microsoft.com/mssql/server:2022-latest
-        ports:
-          - 1433
         env:
           ACCEPT_EULA: "y"
           MSSQL_PID: "Express"
@@ -19,8 +17,5 @@ jobs:
       ConnectionStrings__db: ${{ secrets.CONNSTR }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "7"
       - run: dotnet build
       - run: dotnet test
