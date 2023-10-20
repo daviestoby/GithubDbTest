@@ -3,10 +3,22 @@ on: [push]
 
 jobs:
   test:
-    runs-on: windows-latest
+    name: build and test
+    runs-on: ubuntu-latest
+    services:
+      sql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+          - 1433
+        env:
+          ACCEPT_EULA: "y"
+          MSSQL_PID: "Express"
+          MSSQL_SA_PASSWORD: ${{ secrets.DBPASSWORD }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7"
       - run: dotnet build
+      - run: dotnet test
