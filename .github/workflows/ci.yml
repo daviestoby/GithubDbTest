@@ -23,10 +23,10 @@ jobs:
           dotnet tool install dotnet-reportgenerator-globaltool
       - run: dotnet test --no-build --collect:"XPlat Code Coverage"
       - run: |
-          dotnet reportgenerator -reports:./**/coverage.cobertura.xml -targetdir:"${{ github.workspace }}/CoverageReport" -reporttypes:Html
+          dotnet reportgenerator -reports:./**/coverage.cobertura.xml -targetdir:"/CoverageReport" -reporttypes:Html
       - name: Coverage
         uses: actions/upload-artifact@v3
         with:
           name: Coverage
           retention-days: 1
-          path: "${{ github.workspace}}/CoverageReport"
+          path: "/CoverageReport"
