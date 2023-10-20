@@ -17,7 +17,7 @@ namespace Tests
             ConfigurationBuilder configBuilder = new();
 
             configBuilder.AddEnvironmentVariables();
-            configBuilder.AddJsonFile("appSettings.json");
+            configBuilder.AddJsonFile("appSettings.json", true);
 
             IConfiguration configuration = configBuilder.Build();
 

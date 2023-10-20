@@ -15,7 +15,8 @@ jobs:
           ACCEPT_EULA: "y"
           MSSQL_PID: "Express"
           MSSQL_SA_PASSWORD: ${{ secrets.DBPASSWORD }}
-
+    env:
+      ConnectionStrings__db: ${{ secrets.CONNSTR }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
