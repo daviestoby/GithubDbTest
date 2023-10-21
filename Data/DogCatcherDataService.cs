@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
@@ -9,6 +10,10 @@ namespace Data
         Task<CatcherContext> CreateCatcherAsync(string name);
 
         Task<PoundContext> CreatePoundAsync(string name);
+
+        Task<IEnumerable<PoundContext>> GetPoundsAsync(string name);
+
+        Task ApprehendDogAsync(int dogId, int catcherId, int poundId);
     }
 
     public class DogCatcherDataService : IDogCatcherDataService
@@ -18,6 +23,11 @@ namespace Data
         public DogCatcherDataService(DogCatcherContext context)
         {
             this.context = context;
+        }
+
+        public Task ApprehendDogAsync(int dogId, int catcherId, int poundId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<CatcherContext> CreateCatcherAsync(string name)
@@ -70,6 +80,19 @@ namespace Data
             await this.context.SaveChangesAsync();
 
             return new(pound.Id, pound.Name);
+        }
+
+        public async Task<IEnumerable<PoundContext>> GetPoundsAsync(string name)
+        {
+            var query = this.context.Pounds.AsNoTracking().Select(s => new { s.Id, s.Name });
+
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(s => s.Name == name);
+
+            return await query.OrderBy(s => s.Id)
+                .Take(10)
+                .Select(s => new PoundContext(s.Id, s.Name))
+                .ToListAsync();
         }
     }
 }

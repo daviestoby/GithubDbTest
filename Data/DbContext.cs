@@ -39,6 +39,9 @@ namespace Data
         public SystemState Status { get; set; }
 
         public Pound? Pound { get; set; }
+
+        [Timestamp]
+        public byte[] ConcurrencyToken { get; set; } = null!;
     }
 
     [Table("Catcher")]
@@ -50,6 +53,9 @@ namespace Data
         [Required]
         [MaxLength(255)]
         public required string Name { get; set; }
+
+        [Timestamp]
+        public byte[] ConcurrencyToken { get; set; } = null!;
     }
 
     [Table("Pound")]
@@ -63,7 +69,8 @@ namespace Data
         public required string Name { get; set; }
 
         public ICollection<Dog> Dogs { get; set; } = new HashSet<Dog>();
+
+        [Timestamp]
+        public byte[] ConcurrencyToken { get; set; } = null!;
     }
-
-
 }
